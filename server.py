@@ -4,6 +4,7 @@ import threading
 
 
 def start_server():
+    client_id=0
     # create an INET, STREAMing socket
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # bind the socket to a public host, and a well-known port
@@ -19,17 +20,20 @@ def start_server():
         # in this case, we'll pretend this is a threaded server
 
         print("client connected")
-        ct = client_thread(clientsocket)
+        ct = client_thread(clientsocket,client_id)
         
         ct.run()
+        client_id +=1
         
 
 class client_thread(threading.Thread):
-    def __init__(self, sock):
+    def __init__(self, sock, id):
         threading.Thread.__init__(self)
         self.sock =sock 
+        self.id = id
     def run(self):
         print("client thread started!")
+        print("I'm client{0}".format(self.id))
 
 if __name__ == '__main__':
     start_server()
